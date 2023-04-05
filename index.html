@@ -33,10 +33,17 @@
 			.then(response => response.json())
 			.then(data => {
 				const resultDiv = document.getElementById('result');
-				resultDiv.textContent = data.url;
+				const link = document.createElement('a');
+				link.href = data.url;
+				link.textContent = data.url;
+				link.target = '_blank';
+				resultDiv.textContent = 'Generated WhatsApp Send URL: ';
+				resultDiv.appendChild(link);
 			})
 			.catch(error => console.error(error));
 		});
 	</script>
 </body>
 </html>
+
+
