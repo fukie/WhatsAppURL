@@ -21,6 +21,8 @@ This tool was created due to the following encounters:
 - Generate WhatsApp URL based on user's selection and input.
 
 # Backlog
-- Beautify static page (use Bootstrap, add link to GitHub, Ko-Fi, version, t&cs, by who)
+- Beautify static page (use Bootstrap)
 - Paste number and allow detection of country code if it is part of it?
 - Return results without changing page?
+- Add license and T&Cs
+- Add other stuff (link to GitHub, Ko-Fi, version, by who)
