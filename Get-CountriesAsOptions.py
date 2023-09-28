@@ -4,7 +4,8 @@ import requests
 
 def generate_country_options():
     # Get the latest country data from the REST Countries API
-    url = "https://restcountries.com/v2/all?fields=name,callingCodes,alpha3Code"
+    # url = "https://restcountries.com/v2/all?fields=name,callingCodes,alpha3Code"
+    url = "https://restcountries.com/v2/all?fields=name,callingCodes,alpha2Code"
     response = requests.get(url)
     data = response.json()
 
@@ -13,10 +14,11 @@ def generate_country_options():
     for country in data:
         name = country["name"]
         code = country["callingCodes"][0]
-        iso3 = country["alpha3Code"]
+        #iso = country["alpha3Code"]
+        iso = country["alpha2Code"]
         #flag = chr(ord(iso3[0]) + 127397) + chr(ord(iso3[1]) + 127397) + chr(ord(iso3[2]) + 127397)  # Convert ISO code to flag emoji
         option = f'{name} (+{code})'  # Format the option text
-        options += f'<option value="{iso3}">{option}</option>\n'
+        options += f'<option value="{iso}">{option}</option>\n'
 
     return options
 
