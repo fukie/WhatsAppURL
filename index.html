@@ -339,7 +339,7 @@
 					// Handle unknown value by setting the default value to 'null'
 					$("#countryCode").val(null).trigger("change");
 				} else {
-					console.log('Fetched country:', country);
+					// console.log('Fetched country:', country);
 					// Set the default selection in the Select2 dropdown to the user's country
 					$("#countryCode").val(country).change();
 				}
@@ -347,7 +347,7 @@
 			.catch(error => console.error('Fetch error:', error))
 			.finally(() => {
 				// Initialize the Select2 dropdown after handling errors
-				console.log('Select2 initialization');
+				// console.log('Select2 initialization');
 				$("#countryCode").select2();
 			});
 
