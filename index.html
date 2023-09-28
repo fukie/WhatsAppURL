@@ -322,37 +322,40 @@
 				'Authorization': `Bearer ${apiKey}`
 			});
 
-			// Make an API request to fetch the user's country
-			fetch(`https://ipinfo.io/country/`, { headers })
-			.then(response => {
-				if (!response.ok) {
-					console.error('Error:', response.status, response.statusText);
-					// Handle the error here by setting the default value to 'null'
-					$("#countryCode").val(null).trigger("change");
-					throw new Error('Error fetching country');
-				}
-				return response.text();
-			})
-			.then(country => {
-				// Trim whitespace and newlines from the country code
-				country = country.trim();
+			// Fetch the user's country based on their IP address from country.is
+			fetch('https://api.country.is')
+				.then(response => {
+					if (!response.ok) {
+						console.error('Error:', response.status, response.statusText);
+						// Handle the error here by setting the default value to 'null'
+						$("#countryCode").val(null).trigger("change");
+						throw new Error('Error fetching country');
+					}
+					return response.json();
+				})
+				.then(data => {
+					var country = data.country;
 
-				if (!country || country === '') {
-					console.error('Empty or unknown country:', country);
-					// Handle unknown value by setting the default value to 'null'
-					$("#countryCode").val(null).trigger("change");
-				} else {
-					// console.log('Fetched country:', country);
-					// Set the default selection in the Select2 dropdown to the user's country
-					$("#countryCode").val(country).change();
-				}
-			})
-			.catch(error => console.error('Fetch error:', error))
-			.finally(() => {
-				// Initialize the Select2 dropdown after handling errors
-				// console.log('Select2 initialization');
-				$("#countryCode").select2();
-			});
+					// Trim whitespace and newlines from the country code
+					country = country.trim();
+
+					if (!country || country === '') {
+						console.error('Empty or unknown country:', country);
+						// Handle unknown value by setting the default value to 'null'
+						$("#countryCode").val(null).trigger("change");
+					} else {
+						// console.log('Fetched country:', country);
+						// Set the default selection in the Select2 dropdown to the user's country
+						$("#countryCode").val(country).change();
+					}
+				})
+				.catch(error => console.error('Fetch error:', error))
+				.finally(() => {
+					// Initialize the Select2 dropdown after handling errors
+					// console.log('Select2 initialization');
+					$("#countryCode").select2();
+				});
+
 
 			// Mandatory to focus on the field, due to conflict with jQuery 3.6.0
 			$(document).on('select2:open', () => {
