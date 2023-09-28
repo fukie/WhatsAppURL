@@ -11,12 +11,14 @@ This tool was created due to the following encounters:
 3. Companies may have a WhatsApp shortcut that is malformed / using wrong API which is no longer usable.
 
 # Changelog
-## v0.2 - 28 Sep 2023
+## v0.2 - 28/29 Sep 2023
 - Added Select2 for easier selection of country name / country calling code.
 - Added geolocation detection to default selection of country name / country calling code based on IP address.
 - Improved instructions.
+- Added Ko-Fi link
+- Added versioning and GitHub profile link.
 
-## v0.1 - 06 Apr 2023
+## v0.1 - 05/06 Apr 2023
 - Initial version based on ISO 3166 Alpha 3 codes.
 - Generate WhatsApp URL based on user's selection and input.
 
@@ -25,4 +27,3 @@ This tool was created due to the following encounters:
 - Paste number and allow detection of country code if it is part of it?
 - Return results without changing page?
 - Add license and T&Cs
-- Add other stuff (link to GitHub, Ko-Fi, version, by who)
