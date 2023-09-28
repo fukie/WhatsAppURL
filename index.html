@@ -4,6 +4,29 @@
 	<meta charset="UTF-8">
 	<title>Generate WhatsApp Send URL</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+	<style>
+		/* Customize the appearance of the Select2 dropdown */
+		.select2-container--default .select2-selection--single {
+			height: auto;
+			border: 1px solid #ced4da;
+			border-radius: .25rem;
+			padding: .25rem .5rem; /* Adjust the padding as needed */
+		}
+	
+		.select2-container--default .select2-selection--single .select2-selection__rendered {
+			line-height: 1.5;
+			margin: 0; /* Remove margin */
+			padding: 0; /* Remove padding */
+		}
+
+		/* Add left margin or padding to the Select2 input field */
+		.select2-container .select2-search__field {
+    		padding-left: 13px;
+		}
+	</style>
 </head>
 <body>
 	<div class="container mt-5">
@@ -284,31 +307,41 @@
 		</div>
 	</div>
 	<script>
-		const form = document.getElementById('my-form');
-		form.addEventListener('submit', (event) => {
-			event.preventDefault();
-			const formData = new FormData(form);
-			const json = JSON.stringify(Object.fromEntries(formData.entries()));
-			fetch('https://woswpsoxepasxku2je2g7vnase0ypymr.lambda-url.ap-southeast-2.on.aws/', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: json
-			})
-			.then(response => response.json())
-			.then(data => {
-				const resultDiv = document.getElementById('result');
-				const link = document.createElement('a');
-				link.href = data.url;
-				link.textContent = data.url;
-				link.target = '_blank';
-				link.click(); // this line will automatically open the link in a new window
-				resultDiv.textContent = 'Generated URL: ';
-				resultDiv.appendChild(link);
-			})
-			.catch(error => console.error(error));
-		});
+		$(document).ready(function () {
+            // Initialize the select element as a Select2 dropdown
+            $("#countryCode").select2();
+
+			// Mandatory to focus on the field, due to conflict with jQuery 3.6.0
+			$(document).on('select2:open', () => {
+				document.querySelector('.select2-search__field').focus();
+			});
+            
+            const form = document.getElementById('my-form');
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const formData = new FormData(form);
+                const json = JSON.stringify(Object.fromEntries(formData.entries()));
+                fetch('https://woswpsoxepasxku2je2g7vnase0ypymr.lambda-url.ap-southeast-2.on.aws/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: json
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const resultDiv = document.getElementById('result');
+                    const link = document.createElement('a');
+                    link.href = data.url;
+                    link.textContent = data.url;
+                    link.target = '_blank';
+                    link.click(); // this line will automatically open the link in a new window
+                    resultDiv.textContent = 'Generated URL: ';
+                    resultDiv.appendChild(link);
+                })
+                .catch(error => console.error(error));
+            });
+        });
 	</script>
 </body>
 </html>
