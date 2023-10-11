@@ -11,6 +11,10 @@ This tool was created due to the following encounters:
 3. Companies may have a WhatsApp shortcut that is malformed / using wrong API which is no longer usable.
 
 # Changelog
+## v0.3 - 11 Oct 2023
+- Used Start Bootstrap's Scrolling Nav page.
+- Removed auto opening of URL to allow users to verify the URL and then select it.
+
 ## v0.2 - 28/29 Sep 2023
 - Added Select2 for easier selection of country name / country calling code.
 - Added geolocation detection to default selection of country name / country calling code based on IP address.
@@ -23,7 +27,5 @@ This tool was created due to the following encounters:
 - Generate WhatsApp URL based on user's selection and input.
 
 # Backlog
-- Beautify static page (use Bootstrap)
 - Paste number and allow detection of country code if it is part of it?
-- Return results without changing page?
 - Add license and T&Cs
