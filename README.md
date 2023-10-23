@@ -11,6 +11,13 @@ This tool was created due to the following encounters:
 3. Companies may have a WhatsApp shortcut that is malformed / using wrong API which is no longer usable.
 
 # Changelog
+## v1.0 - 23 Oct 2023
+- Rename button and instructions.
+- Added new button to generate URL and auto open WhatsApp.
+- Change field 'Country' default from Afghanistan to a 'tooltip' unless auto detected.
+- Select2 to initialize first while country detection is in progress/not detected.
+- Ensure form is filled in before submission to generate the URL.
+
 ## v0.3 - 11 Oct 2023
 - Used Start Bootstrap's Scrolling Nav page.
 - Removed auto opening of URL to allow users to verify the URL and then select it.

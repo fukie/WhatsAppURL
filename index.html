@@ -71,7 +71,7 @@
                                 <li>Country code prefix is not required.</li>
                                 <li>Spaces and dashes are automatically handled.</li>
                             </ul> -->
-                            <li>&nbsp;Select 'Go'.</li>
+                            <li>&nbsp;Select 'Generate' or 'Generate & Open WhatsApp'</li>
                             <!-- <ul>
                                 <li>It would default to your IP address' country.</li>
                                 <li>Options in dropdown list are searchable.</li>
@@ -92,6 +92,7 @@
                             <div class="form-group row" style="padding-bottom: 8px;">
                                 <label for="countryCode" class="col-sm-2 col-form-label" style="padding-right: 3px;">Country </label>
                                 <div class="col-sm-10"><select class="form-select" id="countryCode" name="countryCode" required>
+                                    <option value="" disabled selected>Select a country</option>
                                     <option value="AF">Afghanistan (+93)</option>
                                     <option value="AX">Åland Islands (+358)</option>
                                     <option value="AL">Albania (+355)</option>
@@ -345,8 +346,11 @@
                                 </select></div>
                             </div>
                             <div class="form-group row" style="padding-bottom: 8px;">
-                                <div class="col-sm-12">
-                                    <button type="submit" class="btn btn-primary w-100">Go</button>
+                                <div class="col-sm-4">
+                                    <button id="get-url-button" type="submit" class="btn btn-primary w-100">Generate</button>
+                                </div>
+                                <div class="col-sm-8">
+                                    <button id="open-url-button" type="submit" class="btn btn-primary w-100">Generate & Open WhatsApp</button>
                                 </div>
                             </div>
                             <div class="form-group row" style="padding-bottom: 8px;">
@@ -355,7 +359,7 @@
                                 <div class="col-sm-10" style="padding-top: 6px; padding-bottom: 6px;">
                                     <div class="card">
                                         <div class="card-header" id="result">
-                                            Select 'Go' first...
+                                            Select a button first...
                                         </div>
                                     </div>
                                 </div>
@@ -421,7 +425,7 @@
                               </tr>
                               <tr>
                                 <td>This is hosted on GitHub Pages</td>
-                                <td><button type="button" class="btn btn-secondary">Version 0.3 (10 Oct 2023)</button></td>
+                                <td><button type="button" class="btn btn-secondary">Version 1.0 (23 Oct 2023)</button></td>
                               </tr>
                             </tbody>
                           </table>
@@ -460,6 +464,8 @@
                     'Authorization': `Bearer ${apiKey}`
                 });
     
+                $('#countryCode').select2();
+                
                 // Fetch the user's country based on their IP address from country.is
                 fetch('https://api.country.is')
                     .then(response => {
@@ -491,7 +497,7 @@
                     .finally(() => {
                         // Initialize the Select2 dropdown after handling errors
                         // console.log('Select2 initialization');
-                        $("#countryCode").select2();
+                        //$("#countryCode").select2();
                     });
     
     
@@ -500,12 +506,15 @@
                     document.querySelector('.select2-search__field').focus();
                 });
                 
+                remoteURL = 'https://woswpsoxepasxku2je2g7vnase0ypymr.lambda-url.ap-southeast-2.on.aws/';
                 const form = document.getElementById('my-form');
-                form.addEventListener('submit', (event) => {
-                    event.preventDefault();
+                const getUrlButton = document.getElementById('get-url-button');
+                const openUrlButton = document.getElementById('open-url-button');
+                const resultDiv = document.getElementById('result');
+                function getUrl() {
                     const formData = new FormData(form);
                     const json = JSON.stringify(Object.fromEntries(formData.entries()));
-                    fetch('https://woswpsoxepasxku2je2g7vnase0ypymr.lambda-url.ap-southeast-2.on.aws/', {
+                    return fetch(remoteURL, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -514,16 +523,55 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        const resultDiv = document.getElementById('result');
-                        const link = document.createElement('a');
-                        link.href = data.url;
-                        link.textContent = data.url;
-                        link.target = '_blank';
-                        // link.click(); // this line will automatically open the link in a new window
-                        resultDiv.textContent = '';
-                        resultDiv.appendChild(link);
+                        return data.url;
                     })
-                    .catch(error => console.error(error));
+                    .catch(error => {
+                        console.error(error);
+                        return null;
+                    });
+                }
+
+                getUrlButton.addEventListener('click', async (event) => {
+                    event.preventDefault();
+
+                    // Use reportValidity() to display default HTML form validation messages
+                    const form = document.getElementById('my-form');
+                    if (form.reportValidity()) {
+                        // If the form is valid, proceed with generating the URL
+                        const url = await getUrl();
+                        if (url) {
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.textContent = url;
+                            link.target = '_blank';
+                            resultDiv.textContent = '';
+                            resultDiv.appendChild(link);
+                        } else {
+                            alert('Failed to generate URL.');
+                        }
+                    }
+                });
+
+                openUrlButton.addEventListener('click', async (event) => {
+                    event.preventDefault();
+
+                    // Use reportValidity() to display default HTML form validation messages
+                    const form = document.getElementById('my-form');
+                    if (form.reportValidity()) {
+                        // If the form is valid, proceed with generating the URL
+                        const url = await getUrl();
+                        if (url) {
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.textContent = url;
+                            link.target = '_blank';
+                            resultDiv.textContent = '';
+                            resultDiv.appendChild(link);
+                            link.click();
+                        } else {
+                            alert('Failed to generate URL.');
+                        }
+                    }
                 });
             });
     
