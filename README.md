@@ -17,6 +17,8 @@ This tool was created due to the following encounters:
 - Change field 'Country' default from Afghanistan to a 'tooltip' unless auto detected.
 - Select2 to initialize first while country detection is in progress/not detected.
 - Ensure form is filled in before submission to generate the URL.
+- Removed old files.
+- Made both GitHub and version buttons go to GitHub repository in new window
 
 ## v0.3 - 11 Oct 2023
 - Used Start Bootstrap's Scrolling Nav page.
